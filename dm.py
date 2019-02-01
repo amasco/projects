@@ -2,7 +2,7 @@
 """
 Created on Sun Nov 25 16:47:53 2018
 
-@author: adrian
+@author: adrian mascorro
 """
 
 import csv
@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(color_codes = True)
 
+#open csv file containing voter registration information for Oregon
 with open('vrd.csv', newline='') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
     count = 0
@@ -69,7 +70,7 @@ with open('vrd.csv', newline='') as csvfile:
     #partydf['Republican'].T.plot.bar()
     #plt.show()
     
-    
+#open U.S. census data for walkability
 with open('walkability.csv', newline='') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
     next(spamreader, None)
@@ -88,6 +89,7 @@ with open('walkability.csv', newline='') as csvfile:
                '057':"TILLAMOOK", '059':"UMATILLA", '061':"UNION", '063':"WALLOWA", '065':"WASCO",
                '067':"WASHINGTON", '069':"WHEELER", '071':"YAMHILL"}
     
+    #only take in the required county and state number, i.e., only read rows with census data for Oregon
     for row in spamreader:
         count = count + 1
         WalktokenM = row[-1].split(',',len(row[-1]))
@@ -135,8 +137,10 @@ with open('walkability.csv', newline='') as csvfile:
     #use pandas to print dataframe
     countydf = pd.DataFrame(CSAdict).T
     countydf.fillna(0, inplace=True)
-    #print(countydf)
     
+    """the following v, w, x, y, and z display a distplot for the Democratic, Republican, 
+       Pacific Green, Libertarian, and Consitution Parties
+    """
     v = []
     v.append(partydf['Libertarian'])
     sns.distplot(v)
@@ -157,12 +161,14 @@ with open('walkability.csv', newline='') as csvfile:
     z.append(partydf['Democrat'])
     sns.distplot(z)
     
+    """ the following v, w, x, y, and z display a joinplot for the Democratic, Republican, 
+       Pacific Green, Libertarian, and Consitution Parties
+    """
     sns.jointplot(x="Average",y=partydf['Democrat'],data=countydf);
     sns.jointplot(x="Average",y=partydf['Republican'],data=countydf);
     sns.jointplot(x="Average",y=partydf['Pacific Green'],data=countydf);
     sns.jointplot(x="Average",y=partydf['Libertarian'],data=countydf);
     sns.jointplot(x="Average",y=partydf['Constitution'],data=countydf);
-    
-    print(partydf)
+   
     
     
